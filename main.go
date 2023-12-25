@@ -22,7 +22,7 @@ func menu() {
 	switch choice {
 
 	case 1:
-		/* TODO: Créer un nouvel évènement */
+		newEvent()
 		break
 
 	case 2:
@@ -116,4 +116,8 @@ func newEvent() {
 	fmt.Println("Entrez une brève description de l'évènement : ")
 	fmt.Scan(&description)
 
+}
+
+func main() {
+	menu()
 }
