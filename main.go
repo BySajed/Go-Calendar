@@ -5,8 +5,21 @@ import (
 	"time"
 )
 
+type Event struct {
+	title       string
+	date        string
+	hour        string
+	place       string
+	category    string
+	description string
+}
+
+var eventsMap = make(map[int]Event)
+var idEvent = 1
+
 func menu() {
 	choice := 0
+	cExit := 0
 
 	fmt.Println("Bienvenue dans le système de gestion de planning\n")
 	fmt.Println("------------------------------------------------\n")
@@ -17,38 +30,40 @@ func menu() {
 	fmt.Println("5. Rechercher un évènement\n")
 	fmt.Println("6. Quitter\n")
 	fmt.Println("Chosissez une option : ")
-	fmt.Scan(&choice)
 
-	switch choice {
+	for cExit != 1 {
+		fmt.Scan(&choice)
+		switch choice {
 
-	case 1:
-		newEvent()
-		break
+		case 1:
+			newEvent()
+			choice = 0
 
-	case 2:
-		/* TODO: Visualiser les évènements */
-		break
+		case 2:
+			showEvents()
+			choice = 0
 
-	case 3:
-		/* TODO: Modifier un évènement */
-		break
+		case 3:
+			modifyEvent()
+			choice = 0
 
-	case 4:
-		/* TODO: Supprimer un évènement */
-		break
+		case 4:
+			/* TODO: Supprimer un évènement */
+			choice = 0
 
-	case 5:
-		/* TODO: Recherchez un évènment */
-		break
+		case 5:
+			/* TODO: Recherchez un évènment */
+			choice = 0
 
-	case 6:
-		/* TODO: Quitter */
-		break
+		case 6:
+			/* TODO: Quitter */
+			choice = 0
+			cExit++
 
-	default:
-		fmt.Println("Choix invalide")
-		menu()
-		break
+		default:
+			fmt.Println("Choix invalide")
+			menu()
+		}
 	}
 }
 
@@ -97,12 +112,6 @@ func newEvent() {
 		newEvent()
 	}
 
-	//Gestion d'erreur en cas d'heure antérieure à l'heure actuelle
-	if parsedHour.Before(time.Now()) {
-		fmt.Println("Heure invalide")
-		newEvent()
-	}
-
 	fmt.Println("Entrez le lieu de l'évènement : ")
 	fmt.Scan(&place)
 
@@ -116,6 +125,125 @@ func newEvent() {
 	fmt.Println("Entrez une brève description de l'évènement : ")
 	fmt.Scan(&description)
 
+	newEvent := Event{
+		title:       title,
+		date:        date,
+		hour:        hour,
+		place:       place,
+		category:    category,
+		description: description,
+	}
+	eventsMap[idEvent] = newEvent
+	idEvent++
+
+	fmt.Println("Evènement créé avec succès !")
+}
+
+func showEvents() {
+
+	fmt.Println("Voulez-vous voir tous vos évènements ou un en particulier ? (Tous/Un)")
+	var choice string
+	fmt.Scan(&choice)
+
+	if choice == "Tous" {
+		fmt.Println("Voici la liste des évènements : \n")
+		for i := 1; i < idEvent; i++ {
+			fmt.Println("------------------------------------------------\n")
+			fmt.Println("Evènement n°", i)
+			fmt.Println("Titre : ", eventsMap[i].title)
+			fmt.Println("Date : ", eventsMap[i].date)
+			fmt.Println("Heure : ", eventsMap[i].hour)
+			fmt.Println("Lieu : ", eventsMap[i].place)
+			fmt.Println("Catégorie : ", eventsMap[i].category)
+			fmt.Println("Description : ", eventsMap[i].description)
+			fmt.Println("------------------------------------------------\n")
+		}
+	} else if choice == "Un" {
+		fmt.Println("Entrez le numéro de l'évènement : ")
+		var id int
+		fmt.Scan(&id)
+		fmt.Println("------------------------------------------------\n")
+		fmt.Println("Evènement n°", id)
+		fmt.Println("Titre : ", eventsMap[id].title)
+		fmt.Println("Date : ", eventsMap[id].date)
+		fmt.Println("Heure : ", eventsMap[id].hour)
+		fmt.Println("Lieu : ", eventsMap[id].place)
+		fmt.Println("Catégorie : ", eventsMap[id].category)
+		fmt.Println("Description : ", eventsMap[id].description)
+		fmt.Println("------------------------------------------------\n")
+	} else {
+		fmt.Println("Choix invalide")
+		showEvents()
+	}
+	menu()
+}
+
+func modifyEvent() {
+	fmt.Println("Entrez le numéro de l'évènement que vous souhaitez modifier : ")
+	var id int
+	fmt.Scan(&id)
+	event := eventsMap[id]
+	fmt.Println("------------------------------------------------\n")
+	fmt.Println("Evènement n°", id)
+	fmt.Println("Titre : ", eventsMap[id].title)
+	fmt.Println("Date : ", eventsMap[id].date)
+	fmt.Println("Heure : ", eventsMap[id].hour)
+	fmt.Println("Lieu : ", eventsMap[id].place)
+	fmt.Println("Catégorie : ", eventsMap[id].category)
+	fmt.Println("Description : ", eventsMap[id].description)
+	fmt.Println("------------------------------------------------\n")
+
+	fmt.Println("Que souhaitez-vous modifier ? (Titre/Date/Heure/Lieu/Catégorie/Description)")
+	var choice string
+	fmt.Scan(&choice)
+
+	if choice == "Titre" || choice == "titre" {
+		fmt.Println("Entrez le nouveau titre : ")
+		var newTitle string
+		fmt.Scan(&newTitle)
+		event.title = newTitle
+		fmt.Println("Titre modifié avec succès !")
+
+	} else if choice == "Date" || choice == "date" {
+		fmt.Println("Entrez la nouvelle date : ")
+		var newDate string
+		fmt.Scan(&newDate)
+		event.date = newDate
+		fmt.Println("Date modifiée avec succès !")
+
+	} else if choice == "Heure" || choice == "heure" {
+		fmt.Println("Entrez la nouvelle heure : ")
+		var newHour string
+		fmt.Scan(&newHour)
+		event.hour = newHour
+		fmt.Println("Heure modifiée avec succès !")
+
+	} else if choice == "Lieu" || choice == "lieu" {
+		fmt.Println("Entrez le nouveau lieu : ")
+		var newPlace string
+		fmt.Scan(&newPlace)
+		event.place = newPlace
+		fmt.Println("Lieu modifié avec succès !")
+
+	} else if choice == "Catégorie" || choice == "catégorie" {
+		fmt.Println("Entrez la nouvelle catégorie : ")
+		var newCategory string
+		fmt.Scan(&newCategory)
+		event.category = newCategory
+		fmt.Println("Catégorie modifiée avec succès !")
+
+	} else if choice == "Description" || choice == "description" {
+		fmt.Println("Entrez la nouvelle description : ")
+		var newDescription string
+		fmt.Scan(&newDescription)
+		event.description = newDescription
+		fmt.Println("Description modifiée avec succès !")
+	} else {
+		fmt.Println("Choix invalide")
+		modifyEvent()
+	}
+
+	eventsMap[id] = event
 }
 
 func main() {
