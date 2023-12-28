@@ -19,7 +19,6 @@ func showEvents() {
 			fmt.Println("Lieu : ", eventsMap[i].place)
 			fmt.Println("Catégorie : ", eventsMap[i].category)
 			fmt.Println("Description : ", eventsMap[i].description)
-			fmt.Println("------------------------------------------------\n")
 		}
 	} else if choice == "Un" {
 		fmt.Println("Entrez le numéro de l'évènement : ")
@@ -33,10 +32,10 @@ func showEvents() {
 		fmt.Println("Lieu : ", eventsMap[id].place)
 		fmt.Println("Catégorie : ", eventsMap[id].category)
 		fmt.Println("Description : ", eventsMap[id].description)
-		fmt.Println("------------------------------------------------\n")
 	} else {
 		fmt.Println("Choix invalide")
 		showEvents()
 	}
-	menu()
+	//menu()
+	return
 }
