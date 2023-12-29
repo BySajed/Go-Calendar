@@ -61,8 +61,9 @@ func menu() {
 		case 6:
 			/* TODO: Quitter */
 			choice = 0
-			cExit++
-			
+			fmt.Println("Au revoir !")
+			cExit = 1
+
 		}
 	}
 }
