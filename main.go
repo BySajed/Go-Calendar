@@ -62,7 +62,8 @@ func menu() {
 			/* TODO: Quitter */
 			choice = 0
 			cExit++
-			
+		default:
+			fmt.Println("Entrée invalide, veuillez réessayez")
 		}
 	}
 }
