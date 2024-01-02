@@ -129,7 +129,14 @@ func connectDatabase() {
 }
 
 func main() {
-	defer db.Close()
+	// Fermeture de la base de donnée
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			fmt.Println("Erreur fermeture de la base de données")
+		}
+	}(db)
+
 	fmt.Println("Bienvenue dans le système de gestion de planning\n")
 	connectDatabase()
 	menu()
