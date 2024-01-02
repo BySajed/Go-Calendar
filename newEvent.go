@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"time"
 )
@@ -63,10 +65,13 @@ func newEvent() {
 	place = scanString(scanner)
 
 	fmt.Println("Choisissez une catégorie(Professionnel, Personnel, Loisir): ")
-	category = scanString(scanner)
-	if category != "Professionnel" && category != "Personnel" && category != "Loisir" {
-		fmt.Println("Catégorie invalide")
-		newEvent()
+	for {
+		category = scanString(scanner)
+		if category != "Professionnel" && category != "Personnel" && category != "Loisir" {
+			fmt.Println("Catégorie invalide")
+			continue
+		}
+		break
 	}
 
 	fmt.Println("Entrez une brève Description de l'évènement : ")
@@ -82,10 +87,30 @@ func newEvent() {
 	}
 	eventsMap[idEvent] = newEvent
 	idEvent++
-
+	if db.Ping() == nil {
+		NewEventRepository(newEvent)
+	}
 	fmt.Println("Evènement créé avec succès !")
 }
 
 func NewEventRepository(event Event) {
+	query := `INSERT INTO event (title, date, hour, place, category, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	session, err := db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func(session *sql.Stmt) {
+		err := session.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(session)
 
+	err = session.QueryRow(event.Title, event.Date, event.Hour, event.Place, event.Category, event.Description).
+		Scan(&event.ID)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println("événement ajouté avec succès !!!")
+	}1
 }
