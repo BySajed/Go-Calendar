@@ -56,7 +56,7 @@ func modifyEvent() {
 		event.Category = newCategory
 		fmt.Println("Catégorie modifiée avec succès !")
 
-	} else if choice == "Description" || choice == "Description" {
+	} else if choice == "Description" {
 		fmt.Println("Entrez la nouvelle Description : ")
 		var newDescription string
 		fmt.Scan(&newDescription)

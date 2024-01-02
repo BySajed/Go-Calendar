@@ -11,8 +11,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
-
 type Event struct {
 	ID          int
 	Title       string
@@ -25,6 +23,7 @@ type Event struct {
 
 var eventsMap = make(map[int]Event)
 var idEvent = 1
+var db *sql.DB
 
 func menu() {
 	choice := 0
@@ -129,15 +128,8 @@ func connectDatabase() {
 }
 
 func main() {
-	// Fermeture de la base de donnée
-	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-			fmt.Println("Erreur fermeture de la base de données")
-		}
-	}(db)
-
 	fmt.Println("Bienvenue dans le système de gestion de planning\n")
 	connectDatabase()
+	defer db.Close()
 	menu()
 }

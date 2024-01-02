@@ -85,19 +85,21 @@ func newEvent() {
 		Category:    category,
 		Description: description,
 	}
+	if db.Ping() == nil {
+		newEvent = NewEventRepository(newEvent)
+	}
+
 	eventsMap[idEvent] = newEvent
 	idEvent++
-	if db.Ping() == nil {
-		NewEventRepository(newEvent)
-	}
 	fmt.Println("Evènement créé avec succès !")
 }
 
-func NewEventRepository(event Event) {
+func NewEventRepository(event Event) Event {
 	query := `INSERT INTO event (title, date, hour, place, category, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
 	session, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
+		return event
 	}
 	defer func(session *sql.Stmt) {
 		err := session.Close()
@@ -110,7 +112,10 @@ func NewEventRepository(event Event) {
 		Scan(&event.ID)
 	if err != nil {
 		log.Fatal(err)
+		return event
 	} else {
 		log.Println("événement ajouté avec succès !!!")
-	}1
+	}
+
+	return event
 }
