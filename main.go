@@ -1,16 +1,26 @@
 package main
 
 import (
+	"bufio"
+	"database/sql"
 	"fmt"
+	"log"
+	"os"
+	"strings"
+
+	_ "github.com/lib/pq"
 )
 
+var db *sql.DB
+
 type Event struct {
-	title       string
-	date        string
-	hour        string
-	place       string
-	category    string
-	description string
+	ID          int
+	Title       string
+	Date        string
+	Hour        string
+	Place       string
+	Category    string
+	Description string
 }
 
 var eventsMap = make(map[int]Event)
@@ -68,7 +78,59 @@ func menu() {
 	}
 }
 
+func loadEnvFromFile(path string) error {
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println("Erreur fermeture fichier env")
+		}
+	}(file)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		parts := strings.Split(scanner.Text(), "=")
+		if len(parts) == 2 {
+			err = os.Setenv(strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1]))
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func connectDatabase() {
+	err := loadEnvFromFile("config.env")
+
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
+	connect := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		dbHost,
+		dbPort,
+		dbUser,
+		dbPassword,
+		dbName)
+
+	db, err = sql.Open("postgres", connect)
+	if err != nil {
+		log.Println("échec de la connexion à la base de données")
+		log.Fatal(err)
+	} else {
+		log.Println("Connexion à la base de données réussie ")
+	}
+
+}
+
 func main() {
+	defer db.Close()
 	fmt.Println("Bienvenue dans le système de gestion de planning\n")
+	connectDatabase()
 	menu()
 }

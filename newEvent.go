@@ -69,19 +69,23 @@ func newEvent() {
 		newEvent()
 	}
 
-	fmt.Println("Entrez une brève description de l'évènement : ")
+	fmt.Println("Entrez une brève Description de l'évènement : ")
 	description = scanString(scanner)
 
 	newEvent := Event{
-		title:       title,
-		date:        date,
-		hour:        hour,
-		place:       place,
-		category:    category,
-		description: description,
+		Title:       title,
+		Date:        date,
+		Hour:        hour,
+		Place:       place,
+		Category:    category,
+		Description: description,
 	}
 	eventsMap[idEvent] = newEvent
 	idEvent++
 
 	fmt.Println("Evènement créé avec succès !")
+}
+
+func NewEventRepository(event Event) {
+
 }
