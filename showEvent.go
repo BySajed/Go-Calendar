@@ -21,12 +21,93 @@ func copyEvents() []Event {
 	return dest
 }
 
-func filterDate() {
-
+func choiceCategorie() string {
+	choice := ""
+	for choice != "1" && choice != "2" && choice != "3" {
+		fmt.Println("Quelle catégorie ?\n1 - Professionnel\n2 - Personnel\n3 - Loisir\n4 - Non, j'ai fait une erreur")
+		fmt.Scan(&choice)
+		if choice == "4" {
+			return "4"
+		}
+	}
+	switch choice {
+	case "1":
+		choice = "Professionnel"
+	case "2":
+		choice = "Personnel"
+	case "3":
+		choice = "Loisir"
+	}
+	return choice
 }
 
-func filterMain() {
+func filterCategorie(events []Event) []Event {
+	choice := choiceCategorie()
+	if choice == "4" {
+		return events
+	}
 
+	var newEvent []Event
+	for i := 0; i < len(events); i++ {
+		if events[i].Category == choice {
+			newEvent = append(newEvent, events[i])
+		}
+	}
+	return newEvent
+}
+
+func filterMain(events []Event) []Event {
+	choice := ""
+
+	for choice != "Y" && choice != "N" {
+		fmt.Println("Voulez-vous filter par catégorie ? (Y/N)")
+		fmt.Scan(&choice)
+		if choice == "Y" {
+			events = filterCategorie(events)
+		}
+	}
+	return events
+}
+
+func sortDate(events []Event) []Event {
+	return events
+}
+
+func sortCategorie(events []Event) []Event {
+	choice := choiceCategorie()
+	if choice == "4" {
+		return events
+	}
+
+	var newEvents []Event
+	for i := 0; i < len(events); i++ {
+		if events[i].Category == choice {
+			newEvents = append(newEvents, events[i])
+		}
+	}
+	for i := 0; i < len(events); i++ {
+		if events[i].Category != choice {
+			newEvents = append(newEvents, events[i])
+		}
+	}
+
+	return newEvents
+}
+
+func sortMain(events []Event) []Event {
+	choice := ""
+	for choice != "1" && choice != "2" && choice != "3" {
+		fmt.Println("Voulez-vous trier par date ou par catégorie ?\n1 - date\n2 - catégorie\n3 - Non, j'ai fait une erreur")
+		fmt.Scan(&choice)
+	}
+
+	if choice == "1" {
+		events = sortDate(events)
+	} else if choice == "2" {
+		events = sortCategorie(events)
+	}
+
+	return events
 }
 
 func choiceMode() int {
@@ -74,17 +155,18 @@ func showEvents() {
 
 	if choice == "Tous" {
 		mode := choiceMode()
-		var eventShow []Event
+		eventShow := copyEvents()
 		switch mode {
-		case EVERYTHING:
-			eventShow = copyEvents()
-			//case FILTER:
+		case FILTER:
+			eventShow = filterMain(eventShow)
+		case SORT:
+			eventShow = sortMain(eventShow)
 
 		}
 		fmt.Println("Voici la liste des évènements : \n")
 		for i := 0; i < len(eventShow); i++ {
 			fmt.Println("------------------------------------------------\n")
-			fmt.Println("Evènement n°", i+1)
+			fmt.Println("Evènement n°", eventShow[i].ID)
 			fmt.Println("Titre : ", eventShow[i].Title)
 			fmt.Println("Date : ", eventShow[i].Date)
 			fmt.Println("Heure : ", eventShow[i].Hour)

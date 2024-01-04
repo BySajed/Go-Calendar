@@ -24,6 +24,7 @@ func newEvent() {
 	var description string
 
 	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
 
 	fmt.Println("Entrez le titre de l'évènement : ")
 	title = scanString(scanner)
@@ -78,6 +79,7 @@ func newEvent() {
 	description = scanString(scanner)
 
 	newEvent := Event{
+		ID:          idEvent,
 		Title:       title,
 		Date:        date,
 		Hour:        hour,
