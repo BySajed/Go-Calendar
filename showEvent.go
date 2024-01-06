@@ -154,6 +154,17 @@ func fetchEventsRepository() {
 	}
 }
 
+func showAEvent(event Event) {
+	fmt.Println("------------------------------------------------")
+	fmt.Println("Evènement n°", event.ID)
+	fmt.Println("Titre : ", event.Title)
+	fmt.Println("Date : ", event.Date)
+	fmt.Println("Heure : ", event.Hour)
+	fmt.Println("Lieu : ", event.Place)
+	fmt.Println("Catégorie : ", event.Category)
+	fmt.Println("Description : ", event.Description)
+}
+
 func showEvents() {
 
 	if db.Ping() == nil {
@@ -177,7 +188,7 @@ func showEvents() {
 			}
 			fmt.Println("Voici la liste des évènements : \n")
 			for i := 0; i < len(eventShow); i++ {
-				fmt.Println("------------------------------------------------\n")
+				fmt.Println("------------------------------------------------")
 				fmt.Println("Evènement n°", eventShow[i].ID)
 				fmt.Println("Titre : ", eventShow[i].Title)
 				fmt.Println("Date : ", eventShow[i].Date)
@@ -197,15 +208,7 @@ func showEvents() {
 				}
 				break
 			}
-
-			fmt.Println("------------------------------------------------\n")
-			fmt.Println("Evènement n°", id)
-			fmt.Println("Titre : ", eventsMap[id].Title)
-			fmt.Println("Date : ", eventsMap[id].Date)
-			fmt.Println("Heure : ", eventsMap[id].Hour)
-			fmt.Println("Lieu : ", eventsMap[id].Place)
-			fmt.Println("Catégorie : ", eventsMap[id].Category)
-			fmt.Println("Description : ", eventsMap[id].Description)
+			showAEvent(eventsMap[id])
 		} else {
 			fmt.Println("Choix invalide")
 			continue
