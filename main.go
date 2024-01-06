@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	_ "github.com/lib/pq"
@@ -39,7 +40,10 @@ func menu() {
 	fmt.Println("Chosissez une option : ")
 
 	for cExit != 1 {
-		fmt.Scan(&choice)
+		var line string
+		fmt.Scanln(&line)
+		choice, _ = strconv.Atoi(line)
+
 		switch choice {
 
 		case 1:

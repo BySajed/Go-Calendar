@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -24,12 +25,15 @@ func newEvent() {
 	var description string
 
 	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
 
 	fmt.Println("Entrez le titre de l'évènement : ")
-	title = scanString(scanner)
+	scanner.Scan()
+	line := scanner.Text()
+	title = strings.TrimSpace(line)
 	fmt.Println("Entrez la date de l'évènement (YYYY-MM-DD): ")
-	date = scanString(scanner)
+	scanner.Scan()
+	line = scanner.Text()
+	date = strings.TrimSpace(line)
 
 	//Gestion d'erreur en cas de mauvais format de date
 	parsedTime, err := time.Parse(fmt_date, date)
@@ -39,17 +43,13 @@ func newEvent() {
 	}
 	if parsedTime.Format(fmt_date) != date {
 		fmt.Println("e format date est invalide")
-		newEvent()
-	}
-
-	//Gestion d'erreur en cas de date antérieure à la date du jour
-	if parsedTime.Before(time.Now()) {
-		fmt.Println("Date invalide")
-		newEvent()
+		newEvent() //TODO: Gérer ce cas d'erreur (Faire une boucle plutôt que de faire ça)
 	}
 
 	fmt.Println("Entrez l'heure de l'évènement (HH:MM): ")
-	hour = scanString(scanner)
+	scanner.Scan()
+	line = scanner.Text()
+	hour = strings.TrimSpace(line)
 
 	//Gestion d'erreur en cas de mauvais format d'heure
 	parsedHour, err := time.Parse("15:04", hour)
@@ -63,7 +63,8 @@ func newEvent() {
 	}
 
 	fmt.Println("Entrez le lieu de l'évènement : ")
-	place = scanString(scanner)
+	line = scanner.Text()
+	place = strings.TrimSpace(line)
 
 	fmt.Println("Choisissez une catégorie(Professionnel, Personnel, Loisir): ")
 	for {
@@ -76,7 +77,9 @@ func newEvent() {
 	}
 
 	fmt.Println("Entrez une brève Description de l'évènement : ")
-	description = scanString(scanner)
+	scanner.Scan()
+	line = scanner.Text()
+	description = strings.TrimSpace(line)
 
 	newEvent := Event{
 		ID:          idEvent,

@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+	"sort"
 	"strconv"
+	"time"
 )
 
 const (
@@ -69,7 +71,16 @@ func filterMain(events []Event) []Event {
 	return events
 }
 
+func compareDate(event1 Event, event2 Event) bool {
+	date1, _ := time.Parse("2006-01-02T15:04:05Z", event1.Date)
+	date2, _ := time.Parse("2006-01-02T15:04:05Z", event2.Date)
+	return date1.Before(date2)
+}
+
 func sortDate(events []Event) []Event {
+	sort.Slice(events, func(i, j int) bool {
+		return compareDate(events[i], events[j])
+	})
 	return events
 }
 
@@ -190,6 +201,5 @@ func showEvents() {
 		fmt.Println("Choix invalide")
 		showEvents()
 	}
-	//menu()
 	return
 }
