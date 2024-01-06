@@ -26,20 +26,27 @@ var eventsMap = make(map[int]Event)
 var idEvent = 1
 var db *sql.DB
 
+func notification() {
+	if db.Ping() == nil {
+		fetchEventsRepository()
+	}
+
+}
+
 func menu() {
 	choice := 0
 	cExit := 0
 
+	notification()
 	for cExit != 1 {
 		var line string
 		errorInput := true
-		fmt.Println("\n------------------------------------------------\n")
-		fmt.Println("1. Créer un nouvel évènement\n")
-		fmt.Println("2. Visualiser les évènements\n")
-		fmt.Println("3. Modifier un évènement\n")
-		fmt.Println("4. Supprimer un évènement\n")
-		fmt.Println("5. Rechercher un évènement\n")
-		fmt.Println("6. Quitter\n")
+		fmt.Println("\n------------------------------------------------")
+		fmt.Println("1. Créer un nouvel évènement")
+		fmt.Println("2. Visualiser les évènements")
+		fmt.Println("3. Modifier un évènement")
+		fmt.Println("4. Supprimer un évènement")
+		fmt.Println("5. Quitter")
 		fmt.Println("Chosissez une option : ")
 
 		for errorInput {
@@ -66,10 +73,6 @@ func menu() {
 				choice = 0
 
 			case 5:
-				/* TODO: Recherchez un évènment */
-				choice = 0
-
-			case 6:
 				/* TODO: Quitter */
 				choice = 0
 				cExit++

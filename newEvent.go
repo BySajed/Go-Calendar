@@ -16,6 +16,10 @@ func scanString(scanner *bufio.Scanner) string {
 }
 
 func newEvent() {
+	if db.Ping() == nil {
+		fetchEventsRepository()
+	}
+
 	var title string
 	var date string
 	fmt_date := "2006-01-02"

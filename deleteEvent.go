@@ -30,7 +30,6 @@ func deleteEvent() {
 		break
 	}
 	showAEvent(eventsMap[idChoice])
-	fmt.Println("-------------------")
 	fmt.Println("êtes-vous sûr de vouloir supprimer cette événement ? (Y/N)")
 	for {
 		fmt.Scanln(&line)
@@ -42,8 +41,11 @@ func deleteEvent() {
 			fmt.Println("Choix invalide")
 		}
 	}
+
 	delete(eventsMap, idChoice)
-	deleteEventRepository(idChoice)
+	if db.Ping() == nil {
+		deleteEventRepository(idChoice)
+	}
 }
 
 func deleteEventRepository(id int) {

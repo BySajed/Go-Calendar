@@ -163,6 +163,7 @@ func showAEvent(event Event) {
 	fmt.Println("Lieu : ", event.Place)
 	fmt.Println("Catégorie : ", event.Category)
 	fmt.Println("Description : ", event.Description)
+	fmt.Println("------------------------------------------------\n")
 }
 
 func showEvents() {
