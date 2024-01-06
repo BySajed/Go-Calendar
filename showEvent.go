@@ -160,46 +160,57 @@ func showEvents() {
 		fetchEventsRepository()
 	}
 
-	fmt.Println("Voulez-vous voir tous vos évènements ou un en particulier ? (Tous/Un)")
-	var choice string
-	fmt.Scan(&choice)
+	for {
+		fmt.Println("Voulez-vous voir tous vos évènements ou un en particulier ? (Tous/Un)")
+		var choice string
+		fmt.Scan(&choice)
 
-	if choice == "Tous" {
-		mode := choiceMode()
-		eventShow := copyEvents()
-		switch mode {
-		case FILTER:
-			eventShow = filterMain(eventShow)
-		case SORT:
-			eventShow = sortMain(eventShow)
+		if choice == "Tous" {
+			mode := choiceMode()
+			eventShow := copyEvents()
+			switch mode {
+			case FILTER:
+				eventShow = filterMain(eventShow)
+			case SORT:
+				eventShow = sortMain(eventShow)
 
-		}
-		fmt.Println("Voici la liste des évènements : \n")
-		for i := 0; i < len(eventShow); i++ {
+			}
+			fmt.Println("Voici la liste des évènements : \n")
+			for i := 0; i < len(eventShow); i++ {
+				fmt.Println("------------------------------------------------\n")
+				fmt.Println("Evènement n°", eventShow[i].ID)
+				fmt.Println("Titre : ", eventShow[i].Title)
+				fmt.Println("Date : ", eventShow[i].Date)
+				fmt.Println("Heure : ", eventShow[i].Hour)
+				fmt.Println("Lieu : ", eventShow[i].Place)
+				fmt.Println("Catégorie : ", eventShow[i].Category)
+				fmt.Println("Description : ", eventShow[i].Description)
+			}
+		} else if choice == "Un" {
+			var id int
+			for {
+				fmt.Println("Entrez le numéro de l'évènement : ")
+				fmt.Scan(&id)
+				if _, i := eventsMap[id]; !i {
+					fmt.Println("L'événement n'existe pas")
+					continue
+				}
+				break
+			}
+
 			fmt.Println("------------------------------------------------\n")
-			fmt.Println("Evènement n°", eventShow[i].ID)
-			fmt.Println("Titre : ", eventShow[i].Title)
-			fmt.Println("Date : ", eventShow[i].Date)
-			fmt.Println("Heure : ", eventShow[i].Hour)
-			fmt.Println("Lieu : ", eventShow[i].Place)
-			fmt.Println("Catégorie : ", eventShow[i].Category)
-			fmt.Println("Description : ", eventShow[i].Description)
+			fmt.Println("Evènement n°", id)
+			fmt.Println("Titre : ", eventsMap[id].Title)
+			fmt.Println("Date : ", eventsMap[id].Date)
+			fmt.Println("Heure : ", eventsMap[id].Hour)
+			fmt.Println("Lieu : ", eventsMap[id].Place)
+			fmt.Println("Catégorie : ", eventsMap[id].Category)
+			fmt.Println("Description : ", eventsMap[id].Description)
+		} else {
+			fmt.Println("Choix invalide")
+			continue
 		}
-	} else if choice == "Un" {
-		fmt.Println("Entrez le numéro de l'évènement : ")
-		var id int
-		fmt.Scan(&id)
-		fmt.Println("------------------------------------------------\n")
-		fmt.Println("Evènement n°", id)
-		fmt.Println("Titre : ", eventsMap[id].Title)
-		fmt.Println("Date : ", eventsMap[id].Date)
-		fmt.Println("Heure : ", eventsMap[id].Hour)
-		fmt.Println("Lieu : ", eventsMap[id].Place)
-		fmt.Println("Catégorie : ", eventsMap[id].Category)
-		fmt.Println("Description : ", eventsMap[id].Description)
-	} else {
-		fmt.Println("Choix invalide")
-		showEvents()
+		break
 	}
 	return
 }

@@ -30,36 +30,42 @@ func newEvent() {
 	scanner.Scan()
 	line := scanner.Text()
 	title = strings.TrimSpace(line)
-	fmt.Println("Entrez la date de l'évènement (YYYY-MM-DD): ")
-	scanner.Scan()
-	line = scanner.Text()
-	date = strings.TrimSpace(line)
+	for {
+		fmt.Println("Entrez la date de l'évènement (YYYY-MM-DD): ")
+		scanner.Scan()
+		line = scanner.Text()
+		date = strings.TrimSpace(line)
 
-	//Gestion d'erreur en cas de mauvais format de date
-	parsedTime, err := time.Parse(fmt_date, date)
-	if err != nil {
-		fmt.Println("Date invalide")
-		newEvent()
-	}
-	if parsedTime.Format(fmt_date) != date {
-		fmt.Println("e format date est invalide")
-		newEvent() //TODO: Gérer ce cas d'erreur (Faire une boucle plutôt que de faire ça)
+		//Gestion d'erreur en cas de mauvais format de date
+		parsedTime, err := time.Parse(fmt_date, date)
+		if err != nil {
+			fmt.Println("Date invalide")
+			continue
+		}
+		if parsedTime.Format(fmt_date) != date {
+			fmt.Println("e format date est invalide")
+			continue
+		}
+		break
 	}
 
-	fmt.Println("Entrez l'heure de l'évènement (HH:MM): ")
-	scanner.Scan()
-	line = scanner.Text()
-	hour = strings.TrimSpace(line)
+	for {
+		fmt.Println("Entrez l'heure de l'évènement (HH:MM): ")
+		scanner.Scan()
+		line = scanner.Text()
+		hour = strings.TrimSpace(line)
 
-	//Gestion d'erreur en cas de mauvais format d'heure
-	parsedHour, err := time.Parse("15:04", hour)
-	if err != nil {
-		fmt.Println("Heure invalide")
-		newEvent()
-	}
-	if parsedHour.Format("15:04") != hour {
-		fmt.Println("Le format heure est invalide")
-		newEvent()
+		//Gestion d'erreur en cas de mauvais format d'heure
+		parsedHour, err := time.Parse("15:04", hour)
+		if err != nil {
+			fmt.Println("Heure invalide")
+			continue
+		}
+		if parsedHour.Format("15:04") != hour {
+			fmt.Println("Le format heure est invalide")
+			continue
+		}
+		break
 	}
 
 	fmt.Println("Entrez le lieu de l'évènement : ")
