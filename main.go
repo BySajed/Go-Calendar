@@ -14,13 +14,13 @@ import (
 )
 
 type Event struct {
-	ID          int
-	Title       string
-	Date        string
-	Hour        string
-	Place       string
-	Category    string
-	Description string
+	ID          int    `csv:"id"`
+	Title       string `csv:"title"`
+	Date        string `csv:"date"`
+	Hour        string `csv:"hour"`
+	Place       string `csv:"place"`
+	Category    string `csv:"category"`
+	Description string `csv:"description"`
 }
 
 var eventsMap = make(map[int]Event)
@@ -68,7 +68,9 @@ func menu() {
 		fmt.Println("2. Visualiser les évènements")
 		fmt.Println("3. Modifier un évènement")
 		fmt.Println("4. Supprimer un évènement")
-		fmt.Println("5. Quitter")
+		fmt.Println("5. Exporter la base en JSON")
+		fmt.Println("6. Exporter la base en CSV")
+		fmt.Println("7. Quitter")
 		fmt.Println("Chosissez une option : ")
 
 		for errorInput {
@@ -93,8 +95,13 @@ func menu() {
 			case 4:
 				deleteEvent()
 				choice = 0
-
 			case 5:
+				exportJSON()
+				choice = 0
+			case 6:
+				exportCSV()
+				choice = 0
+			case 7:
 				/* TODO: Quitter */
 				choice = 0
 				cExit++
@@ -109,6 +116,7 @@ func menu() {
 func loadEnvFromFile(path string) error {
 	file, err := os.Open(path)
 	if err != nil {
+		log.Fatal("Fichier 'config.env' introuvable")
 		return err
 	}
 	defer func(file *os.File) {
