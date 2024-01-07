@@ -1,4 +1,4 @@
-module partiel
+module go-calendar
 
 go 1.21
 
