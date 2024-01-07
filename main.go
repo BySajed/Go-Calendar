@@ -59,6 +59,12 @@ func menu() {
 	choice := 0
 	cExit := 0
 
+	fmt.Println("\x1b[31m░░      ░░░      ░░  ░░░░░░░        ░   ░░░  ░       ░░░      ░░       ░░")
+	fmt.Println("▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒    ▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒")
+	fmt.Println("\x1b[35m▓  ▓▓▓▓▓▓▓  ▓▓▓▓  ▓  ▓▓▓▓▓▓▓      ▓▓▓  ▓  ▓  ▓  ▓▓▓▓  ▓  ▓▓▓▓  ▓       ▓▓")
+	fmt.Println("\x1b[34m█  ████  █        █  ███████  ███████  ██    █  ████  █        █  ███  ██")
+	fmt.Println("██      ██  ████  █        █        █  ███   █       ██  ████  █  ████  █\x1b[0m")
+
 	notification()
 	for cExit != 1 {
 		var line string

@@ -105,6 +105,19 @@ func sortCategorie(events []Event) []Event {
 	return newEvents
 }
 
+func generatePastisCategory(category string) string {
+	var tmp string
+	switch category {
+	case "Professionnel":
+		tmp = "\x1b[36m"
+	case "Loisir":
+		tmp = "\x1b[33m"
+	case "Personnel":
+		tmp = "\x1b[31m"
+	}
+	return tmp + category + "\x1b[0m"
+}
+
 func sortMain(events []Event) []Event {
 	choice := ""
 	for choice != "1" && choice != "2" && choice != "3" {
@@ -161,7 +174,7 @@ func showAEvent(event Event) {
 	fmt.Println("Date : ", event.Date)
 	fmt.Println("Heure : ", event.Hour)
 	fmt.Println("Lieu : ", event.Place)
-	fmt.Println("Catégorie : ", event.Category)
+	fmt.Println("Catégorie : ", generatePastisCategory(event.Category))
 	fmt.Println("Description : ", event.Description)
 	fmt.Println("------------------------------------------------\n")
 }
@@ -189,14 +202,7 @@ func showEvents() {
 			}
 			fmt.Println("Voici la liste des évènements : \n")
 			for i := 0; i < len(eventShow); i++ {
-				fmt.Println("------------------------------------------------")
-				fmt.Println("Evènement n°", eventShow[i].ID)
-				fmt.Println("Titre : ", eventShow[i].Title)
-				fmt.Println("Date : ", eventShow[i].Date)
-				fmt.Println("Heure : ", eventShow[i].Hour)
-				fmt.Println("Lieu : ", eventShow[i].Place)
-				fmt.Println("Catégorie : ", eventShow[i].Category)
-				fmt.Println("Description : ", eventShow[i].Description)
+				showAEvent(eventShow[i])
 			}
 		} else if choice == "Un" {
 			var id int
