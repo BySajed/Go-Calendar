@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -30,7 +31,28 @@ func notification() {
 	if db.Ping() == nil {
 		fetchEventsRepository()
 	}
+	numberEventToday := 0
+	for key, event := range eventsMap {
+		eventTime, err := time.Parse("2006-01-02T15:04:05Z", event.Date)
+		if err != nil {
+			log.Fatal(err)
+		}
+		today := time.Now().UTC().Truncate(24 * time.Hour)
 
+		eventTime = eventTime.Truncate(24 * time.Hour)
+		if eventTime.Equal(today) {
+			if numberEventToday == 0 {
+				fmt.Println("Liste des événements se déroulant aujourd'hui :")
+			}
+			fmt.Printf("N°%d : %s à %s\n", key, event.Title, event.Hour)
+			numberEventToday++
+		}
+	}
+	if numberEventToday == 0 {
+		fmt.Println("Aucun événément se déroulant aujourd'hui")
+	} else {
+		fmt.Printf("Il y a %d événements se déroulant aujourd'hui", numberEventToday)
+	}
 }
 
 func menu() {
