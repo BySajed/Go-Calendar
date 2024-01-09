@@ -47,7 +47,7 @@ Build and run the calendar
 ```shell
 go run .
 ```
-
+```txt
 Technical Description:
 Our project is build only with one package (main) but each function is in a different file. This method make hte debugging part easier. Here is the content of each file:
 
@@ -79,3 +79,4 @@ export.go:
 This code work like a tree structure. The user will chose an option, and the switch in the main will follow the way. When the user finished, he will come back to the origin of the tree (main.go)
 
 Obviously, we have incorporate errors management into our code in forecasting possible user errors.
+```
