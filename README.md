@@ -47,8 +47,9 @@ Build and run the calendar
 ```shell
 go run .
 ```
-```txt
+
 Technical Description:
+```txt
 Our project is build only with one package (main) but each function is in a different file. This method make hte debugging part easier. Here is the content of each file:
 
 main.go:
