@@ -48,6 +48,15 @@ Build and run the calendar
 go run .
 ```
 
+Working time:
+```txt
+Sajed: 2 functions
+Thomas: 2 functions
+Hugo: 2 functions
+
+Each chose two functions that they wanted to code
+```
+
 Technical Description:
 ```txt
 Our project is build only with one package (main) but each function is in a different file. This method make hte debugging part easier. Here is the content of each file:
